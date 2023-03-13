@@ -1,0 +1,83 @@
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+* Behnoud Alaghband
+*
+* This file is used for counting the number of characters and
+* words for each sentence in a file and the total number of
+* words, characters and lines in the file. Also, this 
+* program shows which line has the maximum number of
+* words and which line has the maximum number of 
+* characters.
+*
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+#include <stdio.h>
+#define IN 1 /*inside a word*/
+#define OUT 0 /* OUTSIDE A WORD*/
+
+
+int main()
+{
+  
+  int character, newLine, wordsCount, characterCount, state,lineCharsCount,lineWordsCount;
+  int characterLineCount, wordLineCount, maxChar, maxWord,maxWordLine,maxCharacterLine;
+  state = OUT;
+  newLine =wordsCount = characterCount = lineWordsCount = 0;
+  lineCharsCount = characterLineCount = wordLineCount = 0;
+  maxChar = maxWord = maxWordLine = maxCharacterLine = 0;
+  int number = 1;
+  
+  while ((character = getchar()) != EOF)
+    {
+      
+      if (characterLineCount == 0)
+	{
+	  printf("(%2d) ",number);
+	}
+      if (character != '\n')
+	{
+	  putchar(character);
+	  ++characterCount;
+	  ++characterLineCount;
+	}
+	
+      
+      if (character == '\n')
+	{
+	  
+	++newLine;
+	++number;
+        
+	printf("[%d, %d]", wordLineCount, characterLineCount);
+	putchar(character);
+	
+	if (maxWord < wordLineCount)
+	  {
+	    maxWord = wordLineCount;
+	    maxWordLine = newLine;
+	  }
+	if (maxChar < characterLineCount)
+	  {
+	    maxChar = characterLineCount;
+	    maxCharacterLine = newLine;
+	  }
+	characterLineCount = 0;
+	wordLineCount = 0;
+	}
+       
+      if (character == ' ' || character == '\n' || character == '\t')
+	{
+	state = OUT;
+	}
+      else if (state == OUT)
+	{
+	  state = IN;
+	  ++wordsCount;
+	  ++wordLineCount;
+	}
+    }
+  printf("\n");
+  printf("%d lines, %d words, %d characters\n", newLine, wordsCount, characterCount);
+  printf("Line %d has the most words with %d\n",maxWordLine, maxWord);
+  printf("Line %d has the most characters with %d\n",maxCharacterLine,maxChar);
+    return 0;
+ }
